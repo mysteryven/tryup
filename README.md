@@ -1,10 +1,14 @@
 # tryup
 
-Build a ESM bundler from scratch without any dependencies.
+Build a ESM bundler from scratch without any dependencies !
 
-[] AST Parser
-    - 
-[] Bundler
+- [ ] AST Parser  
+    - [ ] Variable Statement
+    - [ ] For Statement
+    - [ ] Function Declaration
+
+- [ ] Bundler
+    - [ ] Tree shaking
 
 ## Usage
 
