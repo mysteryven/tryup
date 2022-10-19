@@ -1,3 +1,6 @@
 {
-    "extends": "@mysteryzzz/eslint-config-ts"
+    "extends": "@mysteryzzz/eslint-config-ts",
+    "rules": {
+        "no-fallthrough": "off"
+    }
 }
