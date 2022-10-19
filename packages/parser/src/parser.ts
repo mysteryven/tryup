@@ -1,3 +1,4 @@
+import { Node } from './node'
 export class Parser {
   input: string
   start = 0
@@ -11,8 +12,13 @@ export class Parser {
     return new this(input).parse()
   }
 
-  parse() {
+  startNode() {
+    return new Node(this.start)
+  }
+  parse(): Node {
+    const node = this.startNode()
 
+    return node
   }
 
   skipWhite() {
