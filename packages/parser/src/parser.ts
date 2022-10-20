@@ -148,6 +148,6 @@ export class Parser {
   }
 
   next() {
-
+    this.nextToken()
   }
 }
