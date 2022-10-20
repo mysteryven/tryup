@@ -3,6 +3,7 @@ type TokenLabel =
  | 'eof' 
  | 'braceL' | 'braceR'
  | 'var' | 'const'
+ | '=' | ','
 
 export class TokenType {
   label: TokenLabel
@@ -22,8 +23,12 @@ export const types = {
   braceR: new TokenType('braceR'),
   name: new TokenType('name'),
 
+  eq: new TokenType('='),
+  comma: new TokenType(','),
+
   _const: new TokenType('const'),
-  _var: new TokenType('var')
+  _var: new TokenType('var'),
+
 }
 
 export const keywordTypes = {

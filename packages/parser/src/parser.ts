@@ -45,10 +45,14 @@ export class Parser {
   finishNode(node: Node, type: string) {
     node.type = type
     node.end = this.pos
-    return Node
+    return node
   }
 
-  // Acorn uses charCode distinguish whether is a space (https://github.com/mysteryven/acorn/blob/fb6aa2afc527fcab2b1ea2e5b6168a28f797e72f/acorn/src/tokenize.js#L129)
+  isContextual(name: string) {
+    return this.type === tt.name && this.value === name
+  }
+
+  // Acorn uses charCode level distinguish whether is a space (https://github.com/mysteryven/acorn/blob/fb6aa2afc527fcab2b1ea2e5b6168a28f797e72f/acorn/src/tokenize.js#L129)
   skipSpace() { 
     loop: while(this.pos < this.input.length) {
       const ch = this.input.charCodeAt(this.pos)
