@@ -1,6 +1,6 @@
 import { Node } from './node'
 import { keywordTypes, TokenType, types as tt } from './tokentype'
-import { isIdentifierChar, isNewLine, wordsRegexp } from './utils'
+import { isIdentifierChar, isIdentifierStart, isNewLine, wordsRegexp } from './utils'
 export class Parser {
   input: string
   start = 0
@@ -82,7 +82,18 @@ export class Parser {
     this.readToken(this.fullCharCodeAtPos())
   }
   readToken(code: number) {
+    if (isIdentifierStart(code)) {
+      return this.readWord()
+    }
 
+    return this.getTokenFromCode(code)
+  }
+
+  getTokenFromCode(code: number) {
+    switch(code) {
+    case 123: ++this.pos; return this.finishToken(tt.braceL)
+    case 125: ++this.pos; return this.finishToken(tt.braceR)
+    }
   }
 
   readWord() {

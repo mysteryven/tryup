@@ -16,6 +16,15 @@ export function isIdentifierChar(code: number) {
   return false
 }
 
+export function isIdentifierStart(code: number) {
+  if (code < 65) return code === 36
+  if (code < 91) return true
+  if (code < 97) return code === 95
+  if (code < 123) return true
+
+  return false
+}
+
 const keywords = 'break case catch continue debugger default do else finally for function if return switch throw try var while with null true false instanceof typeof void delete new in this const class extends export import super'
 export function wordsRegexp() {
   return new RegExp('^(?:' + keywords.replace(/ /g, '|') + ')$')
