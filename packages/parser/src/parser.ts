@@ -1,4 +1,5 @@
 import { Node } from './node'
+import { parseStatement } from './statement'
 import { keywordTypes, TokenType, types as tt } from './tokentype'
 import { isIdentifierChar, isIdentifierStart, isNewLine, wordsRegexp } from './utils'
 export class Parser {
@@ -23,8 +24,28 @@ export class Parser {
   }
   parse(): Node {
     const node = this.startNode()
+    this.nextToken()
 
     return node
+  }
+  parseTopLevel(node: Node) {
+    if (node.body) {
+      node.body = []
+    }
+    while(this.type !== tt.eof) {
+      const stmt = parseStatement.call(this)
+      node.body!.push(stmt)
+    }
+
+    this.next()
+
+    return this.finishNode(node, 'Program')
+  }
+
+  finishNode(node: Node, type: string) {
+    node.type = type
+    node.end = this.pos
+    return Node
   }
 
   // Acorn uses charCode distinguish whether is a space (https://github.com/mysteryven/acorn/blob/fb6aa2afc527fcab2b1ea2e5b6168a28f797e72f/acorn/src/tokenize.js#L129)
@@ -104,7 +125,6 @@ export class Parser {
     }
 
     return this.finishToken(type, word)
-
   }
   readWord1() {
     const chunkStart = this.pos
