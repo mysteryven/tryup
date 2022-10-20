@@ -1,10 +1,14 @@
 import { Node } from './node'
-import { isNewLine } from './utils'
+import { keywordTypes, TokenType, types as tt } from './tokentype'
+import { isIdentifierChar, isNewLine, wordsRegexp } from './utils'
 export class Parser {
   input: string
   start = 0
   end = 0
   pos = 0
+  type?: TokenType
+  keywords = wordsRegexp()
+  value: string | undefined
 
   constructor(input: string) {
     this.input = input
@@ -68,22 +72,71 @@ export class Parser {
       ch = this.input.charCodeAt(++this.pos)
     }
   }
+  nextToken() {
+    this.skipSpace()
+    this.start = this.pos
+    if (this.pos >= this.input.length) {
+      return this.finishToken(tt.eof)
+    } 
 
-  finishToken() {
-    
+    this.readToken(this.fullCharCodeAtPos())
+  }
+  readToken(code: number) {
+
   }
 
-  // https://262.ecma-international.org/6.0/#sec-ecmascript-language-source-code
-  // A chinese blog explains the JS encoding: https://www.ruanyifeng.com/blog/2014/12/unicode.html
   readWord() {
+    const word = this.readWord1()
+    let type = tt.name
+    if (this.keywords.test(word)) {
+      type = keywordTypes[word]
+    }
 
-  } 
+    return this.finishToken(type, word)
+
+  }
+  readWord1() {
+    const chunkStart = this.pos
+
+    while (this.pos < this.input.length) {
+      const ch = this.fullCharCodeAtPos()
+      if (isIdentifierChar(ch)) {
+        this.pos += ch <= 0xffff ? 1 : 2
+      } else {
+        break
+      }
+    }
+
+    return this.input.slice(chunkStart, this.pos)
+  }
+
+
+  // A chinese blog explains the JS encoding: https://www.ruanyifeng.com/blog/2014/12/unicode.html
+  // https://262.ecma-international.org/6.0/#sec-ecmascript-language-source-code
+  // I didn't read the spec about String in above link, just paste it here :)
+  fullCharCodeAtPos() {
+    const code = this.input.charCodeAt(this.pos)
+    if (code <= 0xd7ff || code >= 0xdc00) return code
+    const next = this.input.charCodeAt(this.pos + 1)
+    return next <= 0xdbff || next >= 0xe000 ? code : (code << 10) + next - 0x35fdc00
+  }
+
+
+  finishToken(type: TokenType, value: string | undefined = undefined) {
+    this.end = this.pos
+    const prevType = this.type
+    this.type = type
+    this.value = value
+
+    this.updateContext(prevType)
+  }
+  updateContext(prevType?: TokenType) {
+    if (this.type?.updateContext) {
+      this.type.updateContext.call(this, prevType)
+    }
+  }
 
   next() {
-
-  }
-
-  nextToken() {
 
   }
 }

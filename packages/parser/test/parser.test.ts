@@ -34,7 +34,6 @@ describe('Parser', () => {
     parser.pos = code1.indexOf(';') + 1
     parser.skipSpace()
     expect(parser.input.charCodeAt(parser.pos)).toBe(10)
-
   })
 })
 
