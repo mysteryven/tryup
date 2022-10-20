@@ -33,7 +33,7 @@ function parseVar(context: Parser, node: Node, kind: string) {
     parseVarId(context, decl, kind)
 
     if (context.eat(tt.eq)) {
-      decl.init = parseMaybeAssign()
+      decl.init = parseMaybeAssign(context)
     } else {
       decl.init = null
     }
@@ -41,6 +41,23 @@ function parseVar(context: Parser, node: Node, kind: string) {
     if (!context.eat(tt.comma)) break
   }
   return node
+}
+
+function parseMaybeAssign(context: Parser) {
+  switch(context.type) {
+  case tt.num:
+  case tt.string:
+    return parseLiteral(context, context.value!)
+  }
+}
+
+
+function parseLiteral(context: Parser, value: string | number) {
+  const node = context.startNode()
+  node.value = value
+  node.raw = this.input.slice(this.start, this.end)
+  context.next()
+  return context.finishNode(node, 'Literal')
 }
 
 function parseVarId(context: Parser, decl: Node, kind: string) {

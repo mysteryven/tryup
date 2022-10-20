@@ -118,7 +118,22 @@ export class Parser {
     switch(code) {
     case 123: ++this.pos; return this.finishToken(tt.braceL)
     case 125: ++this.pos; return this.finishToken(tt.braceR)
+
+    case 49: case 50: case 51: case 52: case 53: case 54: case 55: case 56: case 57: {// 1-9
+      return this.readNumber()
     }
+    case 34: 
+    case 39: // '"', "'"
+      return this.readString(code)
+    }
+
+  }
+
+  readNumber() {
+
+  }
+
+  readString(code: number) {
   }
 
   readWord() {
@@ -173,5 +188,13 @@ export class Parser {
 
   next() {
     this.nextToken()
+  }
+  eat(type: TokenType) {
+    if (this.type === type) {
+      this.next()
+      return true
+    } else {
+      return false
+    }
   }
 }

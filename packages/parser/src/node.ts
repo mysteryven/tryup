@@ -7,6 +7,8 @@ export class Node {
   kind: string | undefined
   init: Node | undefined | null
   id: Node | undefined
+  value: number | string | undefined
+  raw: string | undefined
 
   constructor(public start: number){}
 }
