@@ -9,7 +9,7 @@ export class Parser {
   pos = 0
   type?: TokenType
   keywords = wordsRegexp()
-  value: string | undefined
+  value: string | number | undefined
 
   constructor(input: string) {
     this.input = input
@@ -26,15 +26,16 @@ export class Parser {
     const node = this.startNode()
     this.nextToken()
 
-    return node
+    return this.parseTopLevel(node)
   }
   parseTopLevel(node: Node) {
-    if (node.body) {
+    if (!node.body) {
       node.body = []
     }
     while(this.type !== tt.eof) {
       const stmt = parseStatement.call(this)
-      node.body!.push(stmt)
+      node.body.push(stmt)
+      console.log(stmt)
     }
 
     this.next()
@@ -199,7 +200,7 @@ export class Parser {
   }
 
 
-  finishToken(type: TokenType, value: string | undefined = undefined) {
+  finishToken(type: TokenType, value: string | number | undefined = undefined) {
     this.end = this.pos
     const prevType = this.type
     this.type = type

@@ -3,10 +3,10 @@ import { types as tt } from './tokentype'
 import { Node } from './node'
 
 // will called from parser by `parserStatement.call(this)`
-export function parseStatement(this: Parser, context: Node) {
+export function parseStatement(this: Parser) {
   let startType = this.type
   const node = this.startNode()
-  let kind: string = this.value!
+  let kind: string = this.value as string
 
   if (isLet(this)) {
     startType = tt._var
@@ -60,7 +60,7 @@ function parseLiteral(context: Parser, value: string | number) {
   return context.finishNode(node, 'Literal')
 }
 
-function parseVarId(context: Parser, decl: Node, kind: string) {
+function parseVarId(context: Parser, decl: Node) {
   decl.id = parseBindingAtom(context)
 }
 
@@ -70,15 +70,15 @@ function parseBindingAtom(context: Parser) {
 }
 
 function parseIdent(context: Parser): Node {
-  const node = this.startNode()
-  if (this.type === tt.name) {
-    node.name = this.value
-  } else if (this.type.keyword) {
-    node.name = this.type.keyword
+  const node = context.startNode()
+  if (context.type === tt.name) {
+    node.name = context.value as string
+  } else if (context.type?.keyword) {
+    node.name = context.type.keyword
   }
 
   context.next()
-  this.finishNode(node, 'Identifier')
+  context.finishNode(node, 'Identifier')
   return node
 }
 

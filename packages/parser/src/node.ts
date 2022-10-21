@@ -9,6 +9,7 @@ export class Node {
   id: Node | undefined
   value: number | string | undefined
   raw: string | undefined
+  name: string | undefined
 
   constructor(public start: number){}
 }

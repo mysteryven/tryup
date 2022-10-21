@@ -7,6 +7,7 @@ type TokenLabel =
 
 export class TokenType {
   label: TokenLabel
+  keyword?: string
   updateContext: {(): void} | null = null 
   constructor(label: TokenLabel) {
     this.label = label
