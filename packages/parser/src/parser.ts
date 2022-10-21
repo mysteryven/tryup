@@ -1,14 +1,13 @@
-import { Node } from './node'
+import { createNode, Node } from './node'
 import { parseStatement } from './statement'
 import { keywordTypes, TokenType, types as tt } from './tokentype'
-import { isIdentifierChar, isIdentifierStart, isNewLine, wordsRegexp } from './utils'
+import { isIdentifierChar, isIdentifierStart, isKeywordType, isNewLine, wordsRegexp } from './utils'
 export class Parser {
   input: string
   start = 0
   end = 0
   pos = 0
   type?: TokenType
-  keywords = wordsRegexp()
   value: string | number | undefined
 
   constructor(input: string) {
@@ -20,7 +19,7 @@ export class Parser {
   }
 
   startNode() {
-    return new Node(this.start)
+    return createNode(this.start)
   }
   parse(): Node {
     const node = this.startNode()
@@ -173,7 +172,7 @@ export class Parser {
   readWord() {
     const word = this.readWord1()
     let type = tt.name
-    if (this.keywords.test(word)) {
+    if (isKeywordType(word)) {
       type = keywordTypes[word]
     }
 

@@ -1,3 +1,5 @@
+import { keywordTypes } from './tokentype'
+
 export function isNewLine(code: number) {
   return code === 10 || code === 13 || code === 0x2028 || code === 0x2029
 }
@@ -28,4 +30,8 @@ export function isIdentifierStart(code: number) {
 const keywords = 'break case catch continue debugger default do else finally for function if return switch throw try var while with null true false instanceof typeof void delete new in this const class extends export import super'
 export function wordsRegexp() {
   return new RegExp('^(?:' + keywords.replace(/ /g, '|') + ')$')
+}
+
+export function isKeywordType(word: string): word is keyof typeof keywordTypes {
+  return wordsRegexp().test(word)
 }
