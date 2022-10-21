@@ -76,3 +76,10 @@ describe('when parse a variable statement', () => {
     })
   })
 })
+
+describe('when parse a ImportDeclaration', () => {
+  test('parse const a = 1', () => {
+    const code = 'export const a = 1'
+    expect(Parser.parse(code)).toMatchInlineSnapshot()
+  })
+})

@@ -6,6 +6,7 @@ Build a ESM bundler from scratch without any dependencies !
     - [x] Variable Statement
     - [ ] Import / Export
     - [ ] For Statement
+    - [ ] Block Statement
     - [ ] Function Declaration
 
 - [ ] AST Walker
