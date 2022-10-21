@@ -9,6 +9,7 @@ export class Parser {
   pos = 0
   type?: TokenType
   value: string | number | undefined
+  lastTokEnd = 0
 
   constructor(input: string) {
     this.input = input
@@ -34,7 +35,6 @@ export class Parser {
     while(this.type !== tt.eof) {
       const stmt = parseStatement.call(this)
       node.body.push(stmt)
-      console.log(stmt)
     }
 
     this.next()
@@ -44,7 +44,7 @@ export class Parser {
 
   finishNode(node: Node, type: string) {
     node.type = type
-    node.end = this.pos
+    node.end = this.lastTokEnd
     return node
   }
 
@@ -220,6 +220,7 @@ export class Parser {
   }
 
   next() {
+    this.lastTokEnd = this.end
     this.nextToken()
   }
   eat(type: TokenType) {
