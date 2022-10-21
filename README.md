@@ -1,6 +1,6 @@
 # tryup
 
-Build a ESM bundler from scratch without any dependencies !
+Try to build a ESM bundler from scratch without any dependencies !
 
 - [ ] AST Parser  
     - [x] Variable Statement
@@ -13,14 +13,12 @@ Build a ESM bundler from scratch without any dependencies !
 - [ ] Bundler
     - [ ] Tree shaking
     - [ ] Build ESM Module
-## Usage
 
-```bash
-pnpm i tryup
-```
+## Recources
 
-
-## Inspired
+- [Acorn](https://github.com/acornjs/acorn)
+- [ESTree](https://github.com/estree/estree/blob/master/es2015.md#importdeclaration)
+- [AST Explorer](https://astexplorer.net/)
 
 
 
