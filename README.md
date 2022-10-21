@@ -11,7 +11,7 @@ Build a ESM bundler from scratch without any dependencies !
 
 - [ ] Bundler
     - [ ] Tree shaking
-    - [] Build ESM Module
+    - [ ] Build ESM Module
 ## Usage
 
 ```bash

@@ -130,10 +130,37 @@ export class Parser {
   }
 
   readNumber() {
+    let total = 0
+    while(this.pos <= this.input.length) {
+      const code = this.input.charCodeAt(this.pos)
 
+      if (code >= 48 && code <=57) {
+        this.pos++
+        total = total * 10 + (code - 48)
+      } else {
+        break
+      }
+    }
+
+    return this.finishToken(tt.num, total)
   }
 
-  readString(code: number) {
+  readString(quote: number) {
+    const chunkStart = ++this.pos
+    for(;;) {
+      if (this.pos >= this.input.length) {
+        throw new Error('Unterminated string constant')
+      }
+
+      const ch = this.input.charCodeAt(this.pos)
+      if (ch === quote) {
+        break
+      }
+
+      this.pos++
+    }
+
+    return this.finishToken(tt.string, this.input.slice(chunkStart, this.pos++))
   }
 
   readWord() {
