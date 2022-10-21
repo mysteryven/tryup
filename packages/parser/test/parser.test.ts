@@ -44,6 +44,72 @@ describe('when parse a variable statement', () => {
     debugger
     const result = Parser.parse(code)
     console.log(result)
-    expect(Parser.parse(code)).toMatchInlineSnapshot()
+    expect(Parser.parse(code)).toMatchInlineSnapshot(`
+      Node {
+        "body": [
+          Node {
+            "body": undefined,
+            "declarations": [
+              Node {
+                "body": undefined,
+                "declarations": undefined,
+                "end": 9,
+                "id": Node {
+                  "body": undefined,
+                  "declarations": undefined,
+                  "end": 7,
+                  "id": undefined,
+                  "init": undefined,
+                  "kind": undefined,
+                  "name": "a",
+                  "raw": undefined,
+                  "start": 4,
+                  "type": "Identifier",
+                  "value": undefined,
+                },
+                "init": Node {
+                  "body": undefined,
+                  "declarations": undefined,
+                  "end": 9,
+                  "id": undefined,
+                  "init": undefined,
+                  "kind": undefined,
+                  "name": undefined,
+                  "raw": "1",
+                  "start": 8,
+                  "type": "Literal",
+                  "value": 1,
+                },
+                "kind": undefined,
+                "name": undefined,
+                "raw": undefined,
+                "start": 4,
+                "type": "VariableDeclarator",
+                "value": undefined,
+              },
+            ],
+            "end": 9,
+            "id": undefined,
+            "init": undefined,
+            "kind": "let",
+            "name": undefined,
+            "raw": undefined,
+            "start": 0,
+            "type": "VariableDeclaration",
+            "value": undefined,
+          },
+        ],
+        "declarations": undefined,
+        "end": 9,
+        "id": undefined,
+        "init": undefined,
+        "kind": undefined,
+        "name": undefined,
+        "raw": undefined,
+        "start": 0,
+        "type": "Program",
+        "value": undefined,
+      }
+    `)
   })
 })

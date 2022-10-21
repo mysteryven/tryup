@@ -30,7 +30,7 @@ function parseVar(context: Parser, node: Node, kind: string) {
   node.kind = kind
   for (;;) {
     const decl = context.startNode()
-    parseVarId(context, decl, kind)
+    parseVarId(context, decl)
 
     if (context.eat(tt.eq)) {
       decl.init = parseMaybeAssign(context)
@@ -55,7 +55,7 @@ function parseMaybeAssign(context: Parser) {
 function parseLiteral(context: Parser, value: string | number) {
   const node = context.startNode()
   node.value = value
-  node.raw = this.input.slice(this.start, this.end)
+  node.raw = context.input.slice(context.start, context.end)
   context.next()
   return context.finishNode(node, 'Literal')
 }

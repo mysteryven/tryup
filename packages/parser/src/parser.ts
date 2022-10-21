@@ -126,8 +126,14 @@ export class Parser {
     case 34: 
     case 39: // '"', "'"
       return this.readString(code)
+    case 61: 
+      return this.readToken_eq()
     }
+  }
 
+  readToken_eq() { // =
+    this.pos++
+    return this.finishToken(tt.eq, '=')
   }
 
   readNumber() {
