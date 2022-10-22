@@ -15,7 +15,7 @@ Try to build a ESM bundler from scratch without any dependencies !
     - [ ] Tree shaking
     - [ ] Build ESM Module
 
-## Recources
+## Resources
 
 - [Acorn](https://github.com/acornjs/acorn)
 - [ESTree](https://github.com/estree/estree/blob/master/es2015.md#importdeclaration)

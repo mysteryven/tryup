@@ -1,7 +1,7 @@
 import { createNode, Node } from './node'
 import { parseStatement } from './statement'
 import { keywordTypes, TokenType, types as tt } from './tokentype'
-import { isIdentifierChar, isIdentifierStart, isKeywordType, isNewLine, wordsRegexp } from './utils'
+import { isIdentifierChar, isIdentifierStart, isKeywordType, isNewLine } from './utils'
 export class Parser {
   input: string
   start = 0
