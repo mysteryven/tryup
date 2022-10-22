@@ -87,6 +87,7 @@ export interface ExportSpecifier extends ModuleSpecifier {
 export interface ExportAllDeclaration extends ModuleDeclaration {
   type: 'ExportAllDeclaration';
   source: Literal;
+  exported: Identifier | null;
 }
 
 export interface ExportDefaultDeclaration extends ModuleDeclaration {

@@ -1,6 +1,6 @@
 import { Parser } from './parser'
 import { types as tt } from './tokentype'
-import { ExportDeclarationUnion, Identifier, ImportDeclaration, ImportDefaultSpecifier, ImportNamespaceSpecifier, ImportSpecifier, ImportSpecifierUnion, Literal, Node, VariableDeclaration, VariableDeclarator, VariableKind } from './node'
+import { ExportAllDeclaration, ExportDeclarationUnion, Identifier, ImportDeclaration, ImportDefaultSpecifier, ImportNamespaceSpecifier, ImportSpecifier, ImportSpecifierUnion, Literal, Node, VariableDeclaration, VariableDeclarator, VariableKind } from './node'
 import { empty } from './utils'
 
 // will called from parser by `parserStatement.call(this)`
@@ -27,8 +27,20 @@ export function parseStatement(this: Parser) {
   throw new Error('not support this type now')
 }
 
-function parseExport(context: Parser, node: ExportDeclarationUnion) {
- 
+function parseExport(context: Parser, node: ExportDeclarationUnion) { 
+  context.next()
+  if (context.eat(tt.star)) {
+    const newNode = node as ExportAllDeclaration
+    if (context.eatContextual('as')) {
+      throw new Error()
+    } else {
+      newNode.exported = null
+    }
+
+    context.expectContextual('from')
+    newNode.source = parseLiteral(context, context.value as string)
+    return context.finishNode(newNode, 'ExportAllDeclaration')
+  }
 }
 
 function parseImport(context: Parser, node: ImportDeclaration) {

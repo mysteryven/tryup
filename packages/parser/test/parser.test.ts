@@ -235,3 +235,31 @@ describe('when parse a ImportDeclaration', () => {
     )
   })
 })
+
+describe('when parse a ExportDeclaration', () => {
+  test('export * from ...', () => {
+    const code = 'export * from "a.js"'
+    expect(Parser.parse(code)).toStrictEqual(
+      {
+        'type': 'Program',
+        'start': 0,
+        'end': 20,
+        'body': [
+          {
+            'type': 'ExportAllDeclaration',
+            'start': 0,
+            'end': 20,
+            'exported': null,
+            'source': {
+              'type': 'Literal',
+              'start': 14,
+              'end': 20,
+              'value': 'a.js',
+              'raw': '"a.js"'
+            }
+          }
+        ],
+      }
+    ) 
+  })
+})

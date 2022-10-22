@@ -36,5 +36,6 @@ export const types = {
 export const keywordTypes = {
   const: types._const,
   var: types._var,
-  import: types._import
+  import: types._import,
+  export: types._export
 }
