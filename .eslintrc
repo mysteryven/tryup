@@ -1,6 +1,7 @@
 {
     "extends": "@mysteryzzz/eslint-config-ts",
     "rules": {
-        "no-fallthrough": "off"
+        "no-fallthrough": "off",
+        "@typescript-eslint/no-explicit-any": "off"
     }
 }

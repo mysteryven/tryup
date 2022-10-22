@@ -52,6 +52,28 @@ export class Parser {
     return this.type === tt.name && this.value === name
   }
 
+  expect(name: TokenType) {
+    if (this.eat(name)) {
+      return true
+    }
+
+    throw new Error('It not a expect tokenType')
+  }
+
+  eatContextual(name: string) {
+    if (!this.isContextual(name)) return false
+    this.next()
+    return true
+  }
+
+  expectContextual(name: string) {
+    if (this.eatContextual(name)) {
+      return true
+    }
+
+    throw new Error(`we expect ${name}, but it's ${this.type}`)
+  }
+
   // Acorn uses charCode level distinguish whether is a space (https://github.com/mysteryven/acorn/blob/fb6aa2afc527fcab2b1ea2e5b6168a28f797e72f/acorn/src/tokenize.js#L129)
   skipSpace() { 
     loop: while(this.pos < this.input.length) {

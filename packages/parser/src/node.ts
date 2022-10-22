@@ -63,11 +63,13 @@ export interface ImportSpecifier extends ModuleSpecifier {
   imported: Identifier;
 }
 
-interface ImportDefaultSpecifier extends ModuleSpecifier {
+export interface ImportDefaultSpecifier extends ModuleSpecifier {
   type: 'ImportDefaultSpecifier';
 }
 
-interface ImportNamespaceSpecifier extends ModuleSpecifier {
+export interface ImportNamespaceSpecifier extends ModuleSpecifier {
   type: 'ImportNamespaceSpecifier';
 }
+
+export type ImportSpecifierUnion = ImportDefaultSpecifier | ImportSpecifier | ImportNamespaceSpecifier
 
