@@ -47,3 +47,27 @@ export function beType<T>(node: Node) {
   return node as unknown as T
 }
 
+export type ModuleDeclaration = Node 
+export interface ModuleSpecifier extends Node {
+  local: Identifier;
+}
+
+export interface ImportDeclaration extends ModuleDeclaration {
+  type: 'ImportDeclaration';
+  specifiers: (ImportSpecifier | ImportDefaultSpecifier | ImportNamespaceSpecifier)[];
+  source: Literal;
+}
+
+export interface ImportSpecifier extends ModuleSpecifier {
+  type: 'ImportSpecifier';
+  imported: Identifier;
+}
+
+interface ImportDefaultSpecifier extends ModuleSpecifier {
+  type: 'ImportDefaultSpecifier';
+}
+
+interface ImportNamespaceSpecifier extends ModuleSpecifier {
+  type: 'ImportNamespaceSpecifier';
+}
+

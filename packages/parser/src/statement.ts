@@ -1,6 +1,7 @@
 import { Parser } from './parser'
 import { types as tt } from './tokentype'
-import { Identifier, Literal, Node, VariableDeclaration, VariableDeclarator, VariableKind } from './node'
+import { Identifier, ImportDeclaration, Literal, Node, VariableDeclaration, VariableDeclarator, VariableKind } from './node'
+import { empty } from './utils'
 
 // will called from parser by `parserStatement.call(this)`
 export function parseStatement(this: Parser) {
@@ -16,9 +17,22 @@ export function parseStatement(this: Parser) {
   switch (startType) {
   case tt._const: case tt._var:
     return parseVarStatement(this, node as VariableDeclaration, kind as unknown as VariableKind)
+
+  case tt._import:
+    return parseImport(this, node as ImportDeclaration)
   }
 
   throw new Error('not support this type now')
+}
+
+function parseImport(context: Parser, node: ImportDeclaration) {
+  context.next()
+  if (context.type === tt.string) {
+    node.specifiers = empty 
+    node.source = parseLiteral(context, context.value as string) 
+  }
+
+  return context.finishNode(node, 'ImportDeclaration')
 }
 
 function parseVarStatement(context: Parser, node: VariableDeclaration, kind: VariableKind) {
@@ -61,7 +75,7 @@ function parseLiteral(context: Parser, value: string | number) {
   node.value = value
   node.raw = context.input.slice(context.start, context.end)
   context.next()
-  return context.finishNode(node, 'Literal')
+  return context.finishNode(node, 'Literal') as Literal
 }
 
 function parseVarId(context: Parser, decl: VariableDeclarator) {

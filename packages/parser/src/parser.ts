@@ -33,7 +33,7 @@ export class Parser {
       node.body = []
     }
     while(this.type !== tt.eof) {
-      const stmt = parseStatement.call(this)
+      const stmt = parseStatement.call(this)!
       node.body.push(stmt)
     }
 

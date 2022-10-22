@@ -78,8 +78,27 @@ describe('when parse a variable statement', () => {
 })
 
 describe('when parse a ImportDeclaration', () => {
-  test('parse const a = 1', () => {
-    const code = 'export const a = 1'
-    expect(Parser.parse(code)).toMatchInlineSnapshot()
+  test('import string', () => {
+    const code = 'import "a.js"'
+    expect(Parser.parse(code)).toStrictEqual({
+      'type': 'Program',
+      'start': 0,
+      'end': 13,
+      'body': [
+        {
+          'type': 'ImportDeclaration',
+          'start': 0,
+          'end': 13,
+          'specifiers': [],
+          'source': {
+            'type': 'Literal',
+            'start': 7,
+            'end': 13,
+            'value': 'a.js',
+            'raw': '"a.js"'
+          }
+        }
+      ],
+    })
   })
 })

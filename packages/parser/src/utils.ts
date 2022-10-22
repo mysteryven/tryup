@@ -35,3 +35,5 @@ export function wordsRegexp() {
 export function isKeywordType(word: string): word is keyof typeof keywordTypes {
   return wordsRegexp().test(word)
 }
+
+export const empty = []
