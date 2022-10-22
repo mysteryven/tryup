@@ -57,7 +57,7 @@ export class Parser {
       return true
     }
 
-    throw new Error('It not a expect tokenType')
+    throw new Error(`Expect ${name.label}, but is ${this.type?.label}`)
   }
 
   eatContextual(name: string) {
@@ -71,7 +71,7 @@ export class Parser {
       return true
     }
 
-    throw new Error(`we expect ${name}, but it's ${this.type}`)
+    throw new Error(`we expect ${name}, but it's ${this.type?.label}`)
   }
 
   // Acorn uses charCode level distinguish whether is a space (https://github.com/mysteryven/acorn/blob/fb6aa2afc527fcab2b1ea2e5b6168a28f797e72f/acorn/src/tokenize.js#L129)
@@ -138,8 +138,9 @@ export class Parser {
 
   getTokenFromCode(code: number) {
     switch(code) {
-    case 123: ++this.pos; return this.finishToken(tt.braceL)
-    case 125: ++this.pos; return this.finishToken(tt.braceR)
+    case 123: ++this.pos; return this.finishToken(tt.braceL) // {
+    case 125: ++this.pos; return this.finishToken(tt.braceR) // }
+    case 44: ++this.pos; return this.finishToken(tt.comma) // ,
 
     case 49: case 50: case 51: case 52: case 53: case 54: case 55: case 56: case 57: {// 1-9
       return this.readNumber()
@@ -149,7 +150,11 @@ export class Parser {
       return this.readString(code)
     case 61: 
       return this.readToken_eq()
+    case 42:
+      ++this.pos
+      return this.finishToken(tt.star) // For easy, only care * now, ignore such as *=, **. 
     }
+
   }
 
   readToken_eq() { // =

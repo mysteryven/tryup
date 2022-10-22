@@ -101,4 +101,137 @@ describe('when parse a ImportDeclaration', () => {
       ],
     })
   })
+
+  test('default import', () => {
+    const code = 'import a from "a.js"'
+    expect(Parser.parse(code)).toStrictEqual(
+      {
+        'type': 'Program',
+        'start': 0,
+        'end': 20,
+        'body': [
+          {
+            'type': 'ImportDeclaration',
+            'start': 0,
+            'end': 20,
+            'specifiers': [
+              {
+                'type': 'ImportDefaultSpecifier',
+                'start': 7,
+                'end': 8,
+                'local': {
+                  'type': 'Identifier',
+                  'start': 7,
+                  'end': 8,
+                  'name': 'a'
+                }
+              }
+            ],
+            'source': {
+              'type': 'Literal',
+              'start': 14,
+              'end': 20,
+              'value': 'a.js',
+              'raw': '"a.js"'
+            }
+          }
+        ],
+      }
+    )
+  })
+
+  test('default and normal import', () => {
+    const code = 'import a, {b} from "a.js"'
+
+    expect(Parser.parse(code)).toStrictEqual(
+      {
+        'type': 'Program',
+        'start': 0,
+        'end': 25,
+        'body': [
+          {
+            'type': 'ImportDeclaration',
+            'start': 0,
+            'end': 25,
+            'specifiers': [
+              {
+                'type': 'ImportDefaultSpecifier',
+                'start': 7,
+                'end': 8,
+                'local': {
+                  'type': 'Identifier',
+                  'start': 7,
+                  'end': 8,
+                  'name': 'a'
+                }
+              },
+              {
+                'type': 'ImportSpecifier',
+                'start': 11,
+                'end': 12,
+                'imported': {
+                  'type': 'Identifier',
+                  'start': 11,
+                  'end': 12,
+                  'name': 'b'
+                },
+                'local': {
+                  'type': 'Identifier',
+                  'start': 11,
+                  'end': 12,
+                  'name': 'b'
+                }
+              }
+            ],
+            'source': {
+              'type': 'Literal',
+              'start': 19,
+              'end': 25,
+              'value': 'a.js',
+              'raw': '"a.js"'
+            }
+          }
+        ]
+      }
+    )
+  })
+
+  test('name import', () => {
+    const code = 'import * as a from "a.js"'
+
+    expect(Parser.parse(code)).toStrictEqual(
+      {
+        'type': 'Program',
+        'start': 0,
+        'end': 25,
+        'body': [
+          {
+            'type': 'ImportDeclaration',
+            'start': 0,
+            'end': 25,
+            'specifiers': [
+              {
+                'type': 'ImportNamespaceSpecifier',
+                'start': 7,
+                'end': 13,
+                'local': {
+                  'type': 'Identifier',
+                  'start': 12,
+                  'end': 13,
+                  'name': 'a'
+                }
+              }
+            ],
+            'source': {
+              'type': 'Literal',
+              'start': 19,
+              'end': 25,
+              'value': 'a.js',
+              'raw': '"a.js"'
+            }
+          }
+        ],
+      }
+    )
+  })
 })

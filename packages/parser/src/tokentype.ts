@@ -14,8 +14,6 @@ export class TokenType {
   }
 }
 
-
-
 export const types = {
   num: new TokenType('num'),
   string: new TokenType('string'),

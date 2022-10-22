@@ -41,13 +41,14 @@ function parseImport(context: Parser, node: ImportDeclaration) {
 }
 
 function parseImportSpecifiers(context: Parser): ImportSpecifierUnion[] {
-  const nodes: Node[] = [] 
+  const nodes: any[] = [] 
 
   // import a from ''
   if (context.type === tt.name) {
     const node = context.startNode() as ImportDefaultSpecifier
     node.local = parseIdent(context)
     nodes.push(context.finishNode(node, 'ImportDefaultSpecifier'))
+    if (!context.eat(tt.comma)) return nodes
   }
   if (context.type === tt.star) {
     const node = context.startNode() as ImportNamespaceSpecifier
@@ -55,14 +56,15 @@ function parseImportSpecifiers(context: Parser): ImportSpecifierUnion[] {
     context.expectContextual('as')
     node.local = parseIdent(context)
     nodes.push(context.finishNode(node, 'ImportNamespaceSpecifier'))
+    return nodes
   }
   context.expect(tt.braceL)
-  let first = false
+  let first = true
   while(!context.eat(tt.braceR)) {
     if (!first) {
       context.expect(tt.comma)
     } else {
-      first = true
+      first = false
     }
 
     const node = context.startNode() as ImportSpecifier
@@ -72,9 +74,10 @@ function parseImportSpecifiers(context: Parser): ImportSpecifierUnion[] {
     } else {
       node.local = node.imported
     }
+    nodes.push(context.finishNode(node, 'ImportSpecifier'))
   }
 
-  return nodes as unknown as any
+  return nodes 
 }
 
 function parseVarStatement(context: Parser, node: VariableDeclaration, kind: VariableKind) {
