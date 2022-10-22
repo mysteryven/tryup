@@ -1,5 +1,4 @@
-// https://github.com/estree/estree/blob/master/es5.md
-
+// https://github.com/estree
 export function createNode(start = 0): Node {
   return {
     start,
@@ -73,3 +72,26 @@ export interface ImportNamespaceSpecifier extends ModuleSpecifier {
 
 export type ImportSpecifierUnion = ImportDefaultSpecifier | ImportSpecifier | ImportNamespaceSpecifier
 
+export interface ExportNamedDeclaration extends ModuleDeclaration {
+  type: 'ExportNamedDeclaration';
+  declaration: Declaration | null;
+  specifiers: ExportSpecifier [];
+  source: Literal | null;
+}
+
+export interface ExportSpecifier extends ModuleSpecifier {
+  type: 'ExportSpecifier';
+  exported: Identifier;
+}
+
+export interface ExportAllDeclaration extends ModuleDeclaration {
+  type: 'ExportAllDeclaration';
+  source: Literal;
+}
+
+export interface ExportDefaultDeclaration extends ModuleDeclaration {
+  type: 'ExportDefaultDeclaration';
+  declaration: Expression; // TODO only support Expression now, maybe add another in the future.
+}
+
+export type ExportDeclarationUnion = ExportDefaultDeclaration | ExportNamedDeclaration | ExportAllDeclaration

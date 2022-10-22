@@ -1,6 +1,6 @@
 import { Parser } from './parser'
 import { types as tt } from './tokentype'
-import { Identifier, ImportDeclaration, ImportDefaultSpecifier, ImportNamespaceSpecifier, ImportSpecifier, ImportSpecifierUnion, Literal, Node, VariableDeclaration, VariableDeclarator, VariableKind } from './node'
+import { ExportDeclarationUnion, Identifier, ImportDeclaration, ImportDefaultSpecifier, ImportNamespaceSpecifier, ImportSpecifier, ImportSpecifierUnion, Literal, Node, VariableDeclaration, VariableDeclarator, VariableKind } from './node'
 import { empty } from './utils'
 
 // will called from parser by `parserStatement.call(this)`
@@ -20,9 +20,15 @@ export function parseStatement(this: Parser) {
 
   case tt._import:
     return parseImport(this, node as ImportDeclaration)
+  case tt._export:
+    return parseExport(this, node as ExportDeclarationUnion)
   }
 
   throw new Error('not support this type now')
+}
+
+function parseExport(context: Parser, node: ExportDeclarationUnion) {
+ 
 }
 
 function parseImport(context: Parser, node: ImportDeclaration) {

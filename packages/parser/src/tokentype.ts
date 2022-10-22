@@ -2,7 +2,7 @@ type TokenLabel =
  | 'num' | 'string' | 'name' 
  | 'eof' 
  | 'braceL' | 'braceR'
- | 'var' | 'const' | 'import'
+ | 'var' | 'const' | 'import' | 'export'
  | '=' | ',' | '*'
 
 export class TokenType {
@@ -28,7 +28,8 @@ export const types = {
 
   _const: new TokenType('const'),
   _var: new TokenType('var'),
-  _import: new TokenType('import')
+  _import: new TokenType('import'),
+  _export: new TokenType('export')
 
 }
 
