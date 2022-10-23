@@ -41,6 +41,10 @@ function parseExport(context: Parser, node: ExportDeclarationUnion) {
     newNode.source = parseLiteral(context, context.value as string)
     return context.finishNode(newNode, 'ExportAllDeclaration')
   }
+
+  if (context.eat(tt._default)) {
+    
+  }
 }
 
 function parseImport(context: Parser, node: ImportDeclaration) {
