@@ -4,7 +4,7 @@ Try to build a ESM bundler from scratch without any dependencies !
 
 - [ ] AST Parser  
     - [x] Variable Statement
-    - [ ] Import / Export (50%)
+    - [ ] Import / Export (70%)
     - [ ] For Statement
     - [ ] Block Statement
     - [ ] Function Declaration
