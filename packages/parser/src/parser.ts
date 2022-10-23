@@ -22,6 +22,11 @@ export class Parser {
   startNode() {
     return createNode(this.start)
   }
+
+  startNodeAt(pos: number) {
+    return createNode(pos)
+  }
+
   parse(): Node {
     const node = this.startNode()
     this.nextToken()

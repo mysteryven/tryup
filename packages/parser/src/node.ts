@@ -96,3 +96,15 @@ export interface ExportDefaultDeclaration extends ModuleDeclaration {
 }
 
 export type ExportDeclarationUnion = ExportDefaultDeclaration | ExportNamedDeclaration | ExportAllDeclaration
+
+export interface AssignmentExpression extends Expression {
+  type: 'AssignmentExpression';
+  operator: AssignmentOperator;
+  left: Pattern | Expression;
+  right: Expression;
+}
+
+type AssignmentOperator = 
+  '=' | '+=' | '-=' | '*=' | '/=' | '%='
+      | '<<=' | '>>=' | '>>>='
+      | '|=' | '^=' | '&='

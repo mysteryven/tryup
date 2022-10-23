@@ -8,9 +8,11 @@ type TokenLabel =
 export class TokenType {
   label: TokenLabel
   keyword?: string
+  isAssign = false
   updateContext: {(): void} | null = null 
-  constructor(label: TokenLabel) {
+  constructor(label: TokenLabel, isAssign = false) {
     this.label = label
+    this.isAssign = isAssign
   }
 }
 
@@ -22,7 +24,7 @@ export const types = {
   braceR: new TokenType('braceR'),
   name: new TokenType('name'),
 
-  eq: new TokenType('='),
+  eq: new TokenType('=', true),
   comma: new TokenType(','),
   star: new TokenType('*'),
 

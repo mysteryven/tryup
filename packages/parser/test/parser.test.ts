@@ -262,4 +262,60 @@ describe('when parse a ExportDeclaration', () => {
       }
     ) 
   })
+
+  test('export default from ...', () => {
+    const code = 'export default a = 1'
+    expect(Parser.parse(code)).toStrictEqual({
+      'type': 'Program',
+      'start': 0,
+      'end': 20,
+      'body': [
+        {
+          'type': 'ExportDefaultDeclaration',
+          'start': 0,
+          'end': 20,
+          'declaration': {
+            'type': 'AssignmentExpression',
+            'start': 15,
+            'end': 20,
+            'operator': '=',
+            'left': {
+              'type': 'Identifier',
+              'start': 15,
+              'end': 16,
+              'name': 'a'
+            },
+            'right': {
+              'type': 'Literal',
+              'start': 19,
+              'end': 20,
+              'value': 1,
+              'raw': '1'
+            }
+          }
+        }
+      ]
+    }) 
+  })
+
+  const code = 'export default 1'
+  expect(Parser.parse(code)).toStrictEqual({
+    'type': 'Program',
+    'start': 0,
+    'end': 16,
+    'body': [
+      {
+        'type': 'ExportDefaultDeclaration',
+        'start': 0,
+        'end': 16,
+        'declaration': {
+          'type': 'Literal',
+          'start': 15,
+          'end': 16,
+          'value': 1,
+          'raw': '1'
+        }
+      }
+    ],
+  }) 
 })

@@ -1,6 +1,6 @@
 import { Parser } from './parser'
 import { types as tt } from './tokentype'
-import { ExportAllDeclaration, ExportDeclarationUnion, Identifier, ImportDeclaration, ImportDefaultSpecifier, ImportNamespaceSpecifier, ImportSpecifier, ImportSpecifierUnion, Literal, Node, VariableDeclaration, VariableDeclarator, VariableKind } from './node'
+import { AssignmentExpression, ExportAllDeclaration, ExportDeclarationUnion, ExportDefaultDeclaration, Identifier, ImportDeclaration, ImportDefaultSpecifier, ImportNamespaceSpecifier, ImportSpecifier, ImportSpecifierUnion, Literal, Node, VariableDeclaration, VariableDeclarator, VariableKind } from './node'
 import { empty } from './utils'
 
 // will called from parser by `parserStatement.call(this)`
@@ -32,7 +32,7 @@ function parseExport(context: Parser, node: ExportDeclarationUnion) {
   if (context.eat(tt.star)) {
     const newNode = node as ExportAllDeclaration
     if (context.eatContextual('as')) {
-      throw new Error()
+      throw new Error('not support now') 
     } else {
       newNode.exported = null
     }
@@ -43,7 +43,10 @@ function parseExport(context: Parser, node: ExportDeclarationUnion) {
   }
 
   if (context.eat(tt._default)) {
-    
+    const newNode = node as ExportDefaultDeclaration
+
+    newNode.declaration = parseMaybeAssign(context)
+    return context.finishNode(node, 'ExportDefaultDeclaration')
   }
 }
 
@@ -127,12 +130,33 @@ function parseVar(context: Parser, node: VariableDeclaration, kind: VariableKind
 }
 
 function parseMaybeAssign(context: Parser) {
+  const startPos = context.start
+
+  const left = parseExprAtom(context)
+
+  if (context.type?.isAssign) {
+    const node = context.startNodeAt(startPos) as AssignmentExpression
+    node.operator = context.value as any
+    node.left = left
+    context.next()
+    node.right = parseMaybeAssign(context)
+
+    return context.finishNode(node, 'AssignmentExpression')
+  }
+
+  return left
+}
+
+function parseExprAtom(context: Parser) {
   switch(context.type) {
   case tt.num:
   case tt.string:
     return parseLiteral(context, context.value!)
+  case tt.name:
+    return parseIdent(context)
   }
 
+  
   throw new Error('not support this type now')
 }
 
