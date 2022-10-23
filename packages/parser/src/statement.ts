@@ -1,6 +1,6 @@
 import { Parser } from './parser'
 import { types as tt } from './tokentype'
-import { AssignmentExpression, ExportAllDeclaration, ExportDeclarationUnion, ExportDefaultDeclaration, Identifier, ImportDeclaration, ImportDefaultSpecifier, ImportNamespaceSpecifier, ImportSpecifier, ImportSpecifierUnion, Literal, Node, VariableDeclaration, VariableDeclarator, VariableKind } from './node'
+import { AssignmentExpression, ExportAllDeclaration, ExportDeclarationUnion, ExportDefaultDeclaration, ExportNamedDeclaration, ExportSpecifier, Identifier, ImportDeclaration, ImportDefaultSpecifier, ImportNamespaceSpecifier, ImportSpecifier, ImportSpecifierUnion, Literal, Node, VariableDeclaration, VariableDeclarator, VariableKind } from './node'
 import { empty } from './utils'
 
 // will called from parser by `parserStatement.call(this)`
@@ -29,25 +29,58 @@ export function parseStatement(this: Parser) {
 
 function parseExport(context: Parser, node: ExportDeclarationUnion) { 
   context.next()
+  // export * from '...'
   if (context.eat(tt.star)) {
-    const newNode = node as ExportAllDeclaration
     if (context.eatContextual('as')) {
       throw new Error('not support now') 
     } else {
-      newNode.exported = null
+      (node as ExportAllDeclaration).exported = null
     }
 
-    context.expectContextual('from')
-    newNode.source = parseLiteral(context, context.value as string)
-    return context.finishNode(newNode, 'ExportAllDeclaration')
+    context.expectContextual('from');
+    (node as ExportAllDeclaration).source = parseLiteral(context, context.value as string)
+    return context.finishNode(node, 'ExportAllDeclaration')
   }
 
+  // export default from '...'
   if (context.eat(tt._default)) {
-    const newNode = node as ExportDefaultDeclaration
-
-    newNode.declaration = parseMaybeAssign(context)
+    (node as ExportDefaultDeclaration).declaration = parseMaybeAssign(context)
     return context.finishNode(node, 'ExportDefaultDeclaration')
   }
+  
+  // export { x, y as z } [from '...'] 
+  (node as ExportNamedDeclaration).declaration = null
+  ;(node as ExportNamedDeclaration).specifiers = parseExportSpecifiers(context)
+
+  if (context.eatContextual('from')) {
+    (node as ExportNamedDeclaration).source = parseLiteral(context, context.value as string)
+  } else {
+    throw new Error('expect from keyword, export syntax error!')
+  }
+  
+  return context.finishNode(node, 'ExportNamedDeclaration')
+}
+
+function parseExportSpecifiers(context: Parser) {
+  const nodes: ExportSpecifier[] = []
+
+  context.expect(tt.braceL)
+  let first = true
+
+  while(!context.eat(tt.braceR)) {
+    if (!first) {
+      context.expect(tt.comma)
+    } else {
+      first = false
+    }
+
+    const node = context.startNode() as ExportSpecifier
+    node.local = parseIdent(context)
+    node.exported = context.eatContextual('as') ? parseIdent(context) : node.local
+    nodes.push(context.finishNode(node, 'ExportSpecifier') as ExportSpecifier)
+  }
+
+  return nodes
 }
 
 function parseImport(context: Parser, node: ImportDeclaration) {

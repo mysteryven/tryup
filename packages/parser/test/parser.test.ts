@@ -264,7 +264,7 @@ describe('when parse a ExportDeclaration', () => {
   })
 
   test('export default from ...', () => {
-    const code = 'export default a = 1'
+    let code = 'export default a = 1'
     expect(Parser.parse(code)).toStrictEqual({
       'type': 'Program',
       'start': 0,
@@ -296,26 +296,87 @@ describe('when parse a ExportDeclaration', () => {
         }
       ]
     }) 
+
+    code = 'export default 1'
+    expect(Parser.parse(code)).toStrictEqual({
+      'type': 'Program',
+      'start': 0,
+      'end': 16,
+      'body': [
+        {
+          'type': 'ExportDefaultDeclaration',
+          'start': 0,
+          'end': 16,
+          'declaration': {
+            'type': 'Literal',
+            'start': 15,
+            'end': 16,
+            'value': 1,
+            'raw': '1'
+          }
+        }
+      ],
+    })
   })
 
-  const code = 'export default 1'
-  expect(Parser.parse(code)).toStrictEqual({
-    'type': 'Program',
-    'start': 0,
-    'end': 16,
-    'body': [
-      {
-        'type': 'ExportDefaultDeclaration',
-        'start': 0,
-        'end': 16,
-        'declaration': {
-          'type': 'Literal',
-          'start': 15,
-          'end': 16,
-          'value': 1,
-          'raw': '1'
+  test('export {} from ...', () => {
+    const code = 'export {a, b as bb} from "c"'
+    expect(Parser.parse(code)).toStrictEqual({
+      'type': 'Program',
+      'start': 0,
+      'end': 28,
+      'body': [
+        {
+          'type': 'ExportNamedDeclaration',
+          'start': 0,
+          'end': 28,
+          'declaration': null,
+          'specifiers': [
+            {
+              'type': 'ExportSpecifier',
+              'start': 8,
+              'end': 9,
+              'local': {
+                'type': 'Identifier',
+                'start': 8,
+                'end': 9,
+                'name': 'a'
+              },
+              'exported': {
+                'type': 'Identifier',
+                'start': 8,
+                'end': 9,
+                'name': 'a'
+              }
+            },
+            {
+              'type': 'ExportSpecifier',
+              'start': 11,
+              'end': 18,
+              'local': {
+                'type': 'Identifier',
+                'start': 11,
+                'end': 12,
+                'name': 'b'
+              },
+              'exported': {
+                'type': 'Identifier',
+                'start': 16,
+                'end': 18,
+                'name': 'bb'
+              }
+            }
+          ],
+          'source': {
+            'type': 'Literal',
+            'start': 25,
+            'end': 28,
+            'value': 'c',
+            'raw': '"c"'
+          }
         }
-      }
-    ],
-  }) 
+      ]
+    }) 
+  })
+   
 })
