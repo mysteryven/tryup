@@ -9,7 +9,7 @@ Try to build a ESM bundler from scratch without any dependencies !
     - [ ] Block Statement
     - [ ] Function Declaration
 
-- [ ] AST Walker
+- [ ] AST Walker(work in progress)
 
 - [ ] Bundler
     - [ ] Tree shaking
@@ -18,6 +18,7 @@ Try to build a ESM bundler from scratch without any dependencies !
 ## Resources
 
 - [Acorn](https://github.com/acornjs/acorn)
+- [estree-walker](https://github.com/mysteryven/estree-walker)  
 - [ESTree](https://github.com/estree/estree/blob/master/es2015.md#importdeclaration)
 - [AST Explorer](https://astexplorer.net/)
 
