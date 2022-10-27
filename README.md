@@ -9,7 +9,7 @@ Try to build a ESM bundler from scratch without any dependencies !
     - [ ] Block Statement
     - [ ] Function Declaration
 
-- [ ] AST Walker(work in progress)
+- [x] AST Walker(only add traverse now, will add remove, edit when used in bundler)
 
 - [ ] Bundler
     - [ ] Tree shaking
