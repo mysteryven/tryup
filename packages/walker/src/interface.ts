@@ -10,3 +10,9 @@ export type SyncHandler = (
   key?: string,
   index?: number
 ) => void
+
+
+export interface WalkerHooks {
+  enter?: SyncHandler;
+  leave?: SyncHandler
+}

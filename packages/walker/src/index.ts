@@ -1,16 +1,19 @@
-import { BaseNode, SyncHandler } from './interface'
+import { BaseNode, SyncHandler, WalkerHooks } from './interface'
 
 
 export default class Walker {
   enter?: SyncHandler
   leave?: SyncHandler
 
-  constructor({enter, leave}: {enter?: SyncHandler, leave?: SyncHandler}) {
+  constructor(enter?: SyncHandler, leave?: SyncHandler) {
     this.enter = enter
     this.leave = leave
   }
 
   visit(node: BaseNode, parent?: BaseNode, prop?: string, index?: number) {
+    if (!node) {
+      return node
+    }
     if (this.enter) {
       this.enter(node, parent, prop, index)
     }
@@ -23,19 +26,22 @@ export default class Walker {
         continue
       } else if (Array.isArray(value)) {
         for (let i = 0; i < value.length; i += 1) {
-          if (value[i] !== null ) {
-            if (!this.visit(value[i], node, key, i)) {
+          this.visit(value[i], node, key, i) 
+        }
       } else if (value !== null) {
-            this.visit(value[i], node, key)
+        this.visit(value, node, key)
       } 
     }
 
     if (this.leave) {
       this.leave(node, parent, prop, index)
     }
-
-    return node
   }
 
+}
 
+
+export function walk(ast: BaseNode, {enter, leave}: WalkerHooks) {
+  const instance = new Walker(enter, leave)
+  return instance.visit(ast)
 }
