@@ -21,6 +21,7 @@ Try to build a ESM bundler from scratch without any dependencies !
 - [estree-walker](https://github.com/mysteryven/estree-walker)  
 - [ESTree](https://github.com/estree/estree/blob/master/es2015.md#importdeclaration)
 - [AST Explorer](https://astexplorer.net/)
+- [Rollup](https://github.com/rollup/rollup)
 
 
 
