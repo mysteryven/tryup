@@ -159,7 +159,6 @@ export class Parser {
       ++this.pos
       return this.finishToken(tt.star) // For easy, only care * now, ignore such as *=, **. 
     }
-
   }
 
   readToken_eq() { // =
