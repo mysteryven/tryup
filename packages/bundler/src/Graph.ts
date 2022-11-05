@@ -9,5 +9,10 @@ export default class Graph {
 
   build() {
     console.log('build')
+
+  }
+
+  private async generateModuleGraph() {
+    
   }
 }
